@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="fr.alma.application.presentation.ApplicationModelWizardID"
+            name="%_UI_ApplicationModelWizard_label"
+            class="fr.alma.application.presentation.ApplicationModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ApplicationModelFile.gif">
+         <description>%_UI_ApplicationModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="fr.alma.application.presentation.ApplicationEditorID"
+            name="%_UI_ApplicationEditor_label"
+            icon="icons/full/obj16/ApplicationModelFile.gif"
+            extensions="application"
+            class="fr.alma.application.presentation.ApplicationEditor"
+            contributorClass="fr.alma.application.presentation.ApplicationActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

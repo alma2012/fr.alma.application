@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/fr.alma.application.feature_1.0.0.201211151037.jar" id="fr.alma.application.feature" version="1.0.0.201211151037">
+      <category name="application"/>
+   </feature>
+   <category-def name="application" label="Alma2012 Application"/>
+</site>
