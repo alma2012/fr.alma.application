@@ -25,8 +25,8 @@ public class TargetFolderSelectionRunnable implements Runnable {
 		PlayGeneratorDialog dlg = new PlayGeneratorDialog(Display.getDefault().getActiveShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider());
 		IContainer[] folders = dlg.openMyFolderSelection(
 				Display.getDefault().getActiveShell(),
-				"kljlk",
-				"lmkmko",
+				"Select Folder",
+				"Choose the folder where generate your play application",
 				false,
 				new Object[]{initialFolder},
 				Collections.<ViewerFilter>emptyList());

@@ -9,19 +9,18 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  fr.alma.application.gen,
- org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.ocl,
  org.eclipse.ocl.ecore,
  org.eclipse.acceleo.model,
  org.eclipse.acceleo.engine,
  org.eclipse.emf.common.ui,
+ org.eclipse.emf.ecore,
  org.eclipse.ui.ide,
  org.eclipse.acceleo.module.model2play.cinematic,
- org.eclipse.acceleo.module.model2play.entity,
  org.eclipse.acceleo.module.model2play.soa,
  fr.alma.application,
- org.obeonetwork.dsl.cinematic
+ org.obeonetwork.dsl.cinematic;bundle-version="3.0.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: true
