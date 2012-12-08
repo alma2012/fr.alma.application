@@ -17,6 +17,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 import org.eclipse.acceleo.module.model2play.cinematic.main.GenerateCinematic;
+import org.eclipse.acceleo.module.model2play.entity.main.GenerateEntity;
 import org.eclipse.acceleo.module.model2play.soa.main.Generate;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.runtime.IPath;
@@ -31,6 +32,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.dsl.cinematic.CinematicRoot;
+import org.obeonetwork.dsl.entity.Block;
+import org.obeonetwork.dsl.entity.Root;
 import org.obeonetwork.dsl.soa.System;
 import org.osgi.framework.Bundle;
 
@@ -97,6 +100,19 @@ public class GenerateAll {
 		//	}
 		//};
 		//gen0.doGenerate(BasicMonitor.toMonitor(monitor));
+		// TDT ENTITY
+		monitor.subTask("Loading...");
+		URI entityRootURI = getEntityRootURI(modelURI);
+		if (entityRootURI != null) {
+		GenerateEntity genEntity = new GenerateEntity(entityRootURI, targetFolder.getLocation().toFile(), arguments);
+			monitor.worked(1);
+			String generationIDEntity = org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil.computeUIProjectID("org.eclipse.acceleo.module.model2play.entity", "org.eclipse.acceleo.module.model2play.entity.main.GenerateEntity", modelURI.toString(), targetFolder.getFullPath().toString(), new ArrayList<String>());
+			genEntity.setGenerationID(generationIDEntity);
+			genEntity.doGenerate(BasicMonitor.toMonitor(monitor));
+			monitor.worked(1);
+		}
+		
+		// TDT CINEMATIC
 		monitor.subTask("Loading...");
 		URI cinematicRootURI = getCinematicRootURI(modelURI);
 		if (cinematicRootURI != null) {
@@ -108,6 +124,7 @@ public class GenerateAll {
 			monitor.worked(1);
 		}
 		
+		// TDT SOA
 		URI soaRootURI = getSoaRootURI(modelURI);
 		if (soaRootURI != null) {
 			Generate genSoa = new Generate(soaRootURI, targetFolder.getLocation().toFile(), arguments);
@@ -119,6 +136,23 @@ public class GenerateAll {
 		}
 	}
 	
+	
+	
+	private URI getEntityRootURI(URI applicationModelURI) {
+		ResourceSet set = new ResourceSetImpl();
+		Resource resource = set.getResource(modelURI, true);
+		EObject object = resource.getContents().get(0);
+		if (object instanceof Application) {
+			Application application = (Application) object;
+			for (EObject model : application.getModels()) {
+				if (model instanceof Block) {
+					return EcoreUtil.getURI(model);
+				}
+			}
+		}
+		
+		return null;
+	}
 	private URI getCinematicRootURI(URI applicationModelURI) {
 		ResourceSet set = new ResourceSetImpl();
 		Resource resource = set.getResource(modelURI, true);
