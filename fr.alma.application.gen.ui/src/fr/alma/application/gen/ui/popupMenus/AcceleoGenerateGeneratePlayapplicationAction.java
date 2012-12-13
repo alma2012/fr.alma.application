@@ -79,7 +79,7 @@ public class AcceleoGenerateGeneratePlayapplicationAction extends ActionDelegate
 								
 								GenerateAll generator = new GenerateAll(modelURI, dlg.getSelectedFolder(), getArguments());
 								System.out.println("generate ws = " + dlg.isGenerateWS());
-								generator.doGenerate(monitor);
+								generator.doGenerate(monitor,dlg.isGenerateWS());
 							} catch (IOException e) {
 								IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
 								Activator.getDefault().getLog().log(status);

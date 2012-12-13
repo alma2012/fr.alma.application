@@ -10,6 +10,7 @@ g	 * Copyright (c) 2008, 2011 Obeo.
  *******************************************************************************/
 package fr.alma.application.gen.ui.common;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -18,7 +19,9 @@ import java.util.List;
 
 import org.eclipse.acceleo.module.model2play.cinematic.main.GenerateCinematic;
 import org.eclipse.acceleo.module.model2play.entity.main.GenerateEntity;
-import org.eclipse.acceleo.module.model2play.soa.main.Generate;
+import org.eclipse.acceleo.module.model2play.soa.main.GenerateSOA;
+import org.eclipse.acceleo.module.model2play.soaws.main.GenerateSOAWS;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -84,11 +87,12 @@ public class GenerateAll {
 	 *
 	 * @param monitor
 	 *            This will be used to display progress information to the user.
+	 * @param enable_webservices 
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 * @generated
 	 */
-	public void doGenerate(IProgressMonitor monitor) throws IOException {
+	public void doGenerate(IProgressMonitor monitor, boolean enable_webservices) throws IOException {
 		if (!targetFolder.getLocation().toFile().exists()) {
 			targetFolder.getLocation().toFile().mkdirs();
 		}
@@ -125,15 +129,32 @@ public class GenerateAll {
 		}
 		
 		// TDT SOA
+		monitor.subTask("Loading...");
 		URI soaRootURI = getSoaRootURI(modelURI);
 		if (soaRootURI != null) {
-			Generate genSoa = new Generate(soaRootURI, targetFolder.getLocation().toFile(), arguments);
+			GenerateSOA genSoa = new GenerateSOA(soaRootURI, targetFolder.getLocation().toFile(), arguments);
 			monitor.worked(1);
-			String generationIDSoa = org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil.computeUIProjectID("org.eclipse.acceleo.module.model2play.soa", "org.eclipse.acceleo.module.model2play.cinematic.main.GenerateSoa", modelURI.toString(), targetFolder.getFullPath().toString(), new ArrayList<String>());
+			String generationIDSoa = org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil.computeUIProjectID("org.eclipse.acceleo.module.model2play.soa", "org.eclipse.acceleo.module.model2play.soa.main.GenerateSOA", modelURI.toString(), targetFolder.getFullPath().toString(), new ArrayList<String>());
 			genSoa.setGenerationID(generationIDSoa);
 			genSoa.doGenerate(BasicMonitor.toMonitor(monitor));
 			monitor.worked(1);
 		}
+		
+		if ( enable_webservices ) {
+			
+			// TDT SOAWS
+			monitor.subTask("Loading...");
+			if (soaRootURI != null) {
+				GenerateSOAWS genSoaWS = new GenerateSOAWS(soaRootURI, targetFolder.getLocation().toFile(), arguments);
+				monitor.worked(1);
+				String generationIDSoaWS = org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil.computeUIProjectID("org.eclipse.acceleo.module.model2play.soaws", "org.eclipse.acceleo.module.model2play.soaws.main.GenerateSOAWS", modelURI.toString(), targetFolder.getFullPath().toString(), new ArrayList<String>());
+				genSoaWS.setGenerationID(generationIDSoaWS);
+				genSoaWS.doGenerate(BasicMonitor.toMonitor(monitor));
+				monitor.worked(1);
+			}
+			
+		}
+		
 	}
 	
 	
